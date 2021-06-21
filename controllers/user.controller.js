@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const dotenv = require("dotenv")
 const jwt = require("jsonwebtoken")
+const Patient = require("../models/patient.model")
 
 dotenv.config();
 const client = require("twilio")(process.env.accountSID,process.env.authToken);
@@ -69,3 +70,37 @@ exports.verifyUser = (req,res,next) =>{
     })
 }
 
+
+
+exports.addPatient = (req,res,next) => {
+    const firstName = req.body["firstName"]
+    const lastName = req.body["lastName"]
+    const aadhar = req.body["aadhar"]
+    const age = req.body["age"]
+    const userId = req.body["userId"]
+    const patient = new Patient({
+        firstName:firstName,
+        lastName:lastName,
+        aadhar:aadhar,
+        age:age,
+        userId:userId
+    })
+    patient.save().then(result=>{
+        return res.status(200).send({message:"patient addes successfully!",patientId:result.id.toString()})
+    }).catch(err=>{
+        console.log(err)
+        return res.status(400).json({"message":"someting went wrong!!"})
+    })
+}
+
+
+exports.getPatients = (req,res,next) => {
+    const userId = req.body["userId"];
+    // console.log(userId)
+    Patient.find({userId:userId}).then(result=>{
+        return res.status(200).send({patients:result})
+    }).catch(err=>{
+        console.log(err)
+        return res.status(400).json({"message":"someting went wrong!!"})
+    })
+}
