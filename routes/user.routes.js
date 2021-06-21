@@ -1,10 +1,10 @@
 const express =require("express")
-const userController = require("../controllers/user")
-const isAuth = require("../middleware/is-auth")
+const userController = require("../controllers/user.controller")
+
 const route = express.Router()
 
 route.post('/verify',userController.verifyUser)
-route.post('/register',userController.registerUser)
+route.post('/login',userController.loginUser)
 
 module.exports = route
 

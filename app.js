@@ -1,9 +1,8 @@
 const express =  require("express")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
-const userRoute =  require("./routes/user");
-const user = require("./models/user");
-
+const userRoute =  require("./routes/user.routes");
+const staffRoute = require("./routes/staff.routes")
 dotenv.config();
 const mongoDbUrl = process.env.MONGODBURL;
 const port = process.env.PORT || 3000;
@@ -15,8 +14,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded())
 
-app.use(userRoute)
-
+app.use("/user",userRoute)
+app.use("/staff",staffRoute)
 
 mongoose.connect(mongoDbUrl).then(result=>{
     app.listen(port,()=>{
